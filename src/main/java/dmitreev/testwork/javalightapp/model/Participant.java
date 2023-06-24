@@ -28,5 +28,5 @@ public class Participant {
     private String email;
 
     @Column(name = "pcrTest")
-    private Boolean pcrTest;
+    private PCRtest pcrTest;
 }

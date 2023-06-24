@@ -27,5 +27,5 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name = "participant_inn")
-    private Participant participant;
+    private Principal principal;
 }
