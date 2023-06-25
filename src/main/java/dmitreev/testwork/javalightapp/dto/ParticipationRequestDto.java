@@ -1,7 +1,7 @@
 package dmitreev.testwork.javalightapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dmitreev.testwork.javalightapp.enums.ContractStatus;
+import dmitreev.testwork.javalightapp.enums.RequestStatus;
 import lombok.*;
 
 import javax.validation.constraints.Positive;
@@ -11,18 +11,18 @@ import javax.validation.constraints.Positive;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContractDto {
+public class ParticipationRequestDto {
 
-    private  Long number;
+    private Long id;
 
-    private ContractStatus status;
+    @Positive
+    private Long event;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private String createdOn;
+    private String created;
 
     @Positive
-    private Long admin;
+    private Long requester;
 
-    @Positive
-    private Long principal;
+    private RequestStatus status;
 }

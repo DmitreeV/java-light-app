@@ -1,5 +1,6 @@
 package dmitreev.testwork.javalightapp.model;
 
+import dmitreev.testwork.javalightapp.enums.PCRtest;
 import lombok.*;
 
 import javax.persistence.*;

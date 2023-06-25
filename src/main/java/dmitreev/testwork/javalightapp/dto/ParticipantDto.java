@@ -1,6 +1,6 @@
 package dmitreev.testwork.javalightapp.dto;
 
-import dmitreev.testwork.javalightapp.model.PCRtest;
+import dmitreev.testwork.javalightapp.enums.PCRtest;
 import lombok.*;
 
 import javax.validation.constraints.Email;
