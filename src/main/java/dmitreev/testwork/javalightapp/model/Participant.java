@@ -1,6 +1,7 @@
 package dmitreev.testwork.javalightapp.model;
 
 import dmitreev.testwork.javalightapp.enums.PCRtest;
+import dmitreev.testwork.javalightapp.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,4 +31,7 @@ public class Participant {
 
     @Column(name = "pcrTest")
     private PCRtest pcrTest;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 }

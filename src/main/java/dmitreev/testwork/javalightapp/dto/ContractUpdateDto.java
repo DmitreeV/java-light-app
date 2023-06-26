@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContractDto {
+public class ContractUpdateDto {
 
     private Long number;
 
@@ -21,6 +21,9 @@ public class ContractDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String createdOn;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private String signingOn;
 
     @Positive
     private Long admin;

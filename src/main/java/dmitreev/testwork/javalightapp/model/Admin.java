@@ -1,5 +1,6 @@
 package dmitreev.testwork.javalightapp.model;
 
+import dmitreev.testwork.javalightapp.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,9 +19,12 @@ public class Admin {
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "orgName")
+    @Column(name = "org_name")
     private String orgName;
 
     @Column(name = "email")
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 }

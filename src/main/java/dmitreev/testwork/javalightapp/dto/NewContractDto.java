@@ -1,16 +1,16 @@
 package dmitreev.testwork.javalightapp.dto;
 
-import dmitreev.testwork.javalightapp.enums.ContractStatus;
 import lombok.*;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class NewContractDto {
 
-    private  Long number;
-
-    private ContractStatus status;
+    @NotBlank(message = "'terms' can not be blank")
+    private String terms;
 }

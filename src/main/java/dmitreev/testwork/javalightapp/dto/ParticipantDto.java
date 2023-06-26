@@ -1,6 +1,8 @@
 package dmitreev.testwork.javalightapp.dto;
 
+import com.sun.istack.NotNull;
 import dmitreev.testwork.javalightapp.enums.PCRtest;
+import dmitreev.testwork.javalightapp.enums.UserRole;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -27,4 +29,7 @@ public class ParticipantDto {
     private String email;
 
     private PCRtest pcrTest;
+
+    @NotNull
+    private UserRole role;
 }

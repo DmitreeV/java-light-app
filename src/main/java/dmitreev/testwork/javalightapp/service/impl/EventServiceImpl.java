@@ -57,13 +57,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional(readOnly = true)
-    public EventDto getEventById(Long eventId) {
-        Event event = getEvent(eventId);
-        return eventMapper.toEventDto(event);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<EventDto> getAllEventsByAdminIdWithSortFromNewToOld(Long adminId, Integer from, Integer size) {
         getAdmin(adminId);
         Page<Event> events = eventRepository.findAllByAdminIdOrderByCreatedOnDesc(adminId, PageRequest.of(from / size, size));

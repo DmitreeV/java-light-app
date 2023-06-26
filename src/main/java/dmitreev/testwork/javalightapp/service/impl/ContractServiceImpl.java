@@ -1,6 +1,7 @@
 package dmitreev.testwork.javalightapp.service.impl;
 
 import dmitreev.testwork.javalightapp.dto.ContractDto;
+import dmitreev.testwork.javalightapp.dto.ContractUpdateDto;
 import dmitreev.testwork.javalightapp.dto.NewContractDto;
 import dmitreev.testwork.javalightapp.enums.ContractStatus;
 import dmitreev.testwork.javalightapp.error.exception.ConflictException;
@@ -66,8 +67,10 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public ContractDto sendContractForSigning(Long contractId, Long adminId, Long principalId) {
         Principal principal = getPrincipal(principalId);
+
         Contract contract = contractRepository.findByNumberAndAdminId(contractId, adminId)
                 .orElseThrow(() -> new ConflictException("Only the contract creator can send it for signing."));
+
         contract.setStatus(ContractStatus.SENT);
         contract.setPrincipal(principal);
         log.info("The contract has been sent to the signing.");
@@ -75,8 +78,9 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public ContractDto reviewContractByPrincipal(Long contractId, Long principalId, Boolean approved) {
+    public ContractUpdateDto reviewContractByPrincipal(Long adminId, Long contractId, Long principalId, Boolean approved) {
         getPrincipal(principalId);
+        getAdmin(adminId);
 
         Contract contract = contractRepository.findByNumberAndPrincipalId(contractId, principalId)
                 .orElseThrow(() -> new ConflictException("The principal must receive a contract for further actions."));
@@ -92,7 +96,7 @@ public class ContractServiceImpl implements ContractService {
             contract.setStatus(ContractStatus.NOT_SIGNED);
         }
         log.info("The contract has been reviewed.");
-        return contractMapper.toContractDto(contractRepository.save(contract));
+        return contractMapper.toContractUpdateDto(contractRepository.save(contract));
     }
 
     @Override
@@ -108,7 +112,7 @@ public class ContractServiceImpl implements ContractService {
         }
 
         contractRepository.deleteById(contractId);
-        log.info("The request was deleted by the admin with id {}.", adminId);
+        log.info("The contract was deleted by the admin with id {}.", adminId);
     }
 
     private Admin getAdmin(Long adminId) {

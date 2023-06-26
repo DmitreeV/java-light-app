@@ -20,6 +20,9 @@ public class Contract {
     @Column(nullable = false)
     private Long number;
 
+    @Column(name = "terms")
+    private String terms;
+
     @Enumerated(EnumType.STRING)
     private ContractStatus status;
 
@@ -34,6 +37,6 @@ public class Contract {
     private Admin admin;
 
     @ManyToOne
-    @JoinColumn(name = "participant_inn")
+    @JoinColumn(name = "principal_id")
     private Principal principal;
 }
