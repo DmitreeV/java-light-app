@@ -52,8 +52,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         request.setRequester(part);
         request.setEvent(event);
 
-        if (Boolean.TRUE.equals(event.getRequestModeration())) {
-            request.setStatus(RequestStatus.PENDING);
+        if (request.getRequester().getPcrTest().equals(PCRtest.NO)) {
+            request.setStatus(RequestStatus.REJECTED);
         } else {
             request.setStatus(RequestStatus.CONFIRMED);
         }
@@ -74,20 +74,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequestDto rejectionParticipationRequest(Long partId, Long requestId) {
-        ParticipationRequest request = requestRepository.findByIdAndRequesterId(requestId, partId)
-                .orElseThrow(() -> new ConflictException("Only the person who left the request can cancel it."));
-        if (request.getRequester().getPcrTest().equals(PCRtest.NO)) {
-            request.setStatus(RequestStatus.REJECTED);
-        }
-        log.info("The request was rejected.");
-        return participationRequestMapper.toParticipationRequestDto(requestRepository.save(request));
-    }
-
-    @Override
     public ParticipationRequestDto cancelParticipationRequest(Long partId, Long requestId) {
         ParticipationRequest request = requestRepository.findByIdAndRequesterId(requestId, partId)
                 .orElseThrow(() -> new ConflictException("Only the person who left the request can cancel it."));
+
+        if (request.getStatus().equals(RequestStatus.REJECTED)) {
+            throw new ConflictException("You cannot cancel the request because it has been rejected.");
+        }
         request.setStatus(RequestStatus.CANCELED);
         log.info("The request was canceled.");
         return participationRequestMapper.toParticipationRequestDto(requestRepository.save(request));

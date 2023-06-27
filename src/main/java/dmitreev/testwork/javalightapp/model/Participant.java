@@ -29,7 +29,8 @@ public class Participant {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "pcrTest")
+    @Column(name = "pcr_test")
+    @Enumerated(EnumType.STRING)
     private PCRtest pcrTest;
 
     @Enumerated(EnumType.STRING)

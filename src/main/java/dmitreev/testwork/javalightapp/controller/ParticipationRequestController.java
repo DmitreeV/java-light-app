@@ -27,12 +27,6 @@ public class ParticipationRequestController {
         return participationRequestService.getParticipationRequests(partId);
     }
 
-    @PatchMapping("/{requestId}/rejection")
-    @ResponseStatus(value = HttpStatus.OK)
-    public ParticipationRequestDto rejectionParticipationRequest(@PathVariable Long partId, @PathVariable Long requestId) {
-        return participationRequestService.rejectionParticipationRequest(partId, requestId);
-    }
-
     @PatchMapping("/{requestId}/cancel")
     @ResponseStatus(value = HttpStatus.OK)
     public ParticipationRequestDto cancelParticipationRequest(@PathVariable Long partId, @PathVariable Long requestId) {

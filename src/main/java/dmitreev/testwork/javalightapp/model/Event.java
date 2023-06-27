@@ -20,20 +20,17 @@ public class Event {
     @Column(nullable = false)
     private Long id;
 
-    @Column(name = "eventName")
+    @Column(name = "event_name")
     private String eventName;
 
-    @Column(name = "eventDate")
+    @Column(name = "event_date")
     private LocalDateTime eventDate;
 
-    @Column(name = "createdOn")
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
     @Column(name = "rate")
     private Long rate;
-
-    @Column(name = "request_moderation")
-    private Boolean requestModeration;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")

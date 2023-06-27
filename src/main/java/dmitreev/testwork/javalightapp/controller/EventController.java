@@ -21,7 +21,8 @@ public class EventController {
 
     @PostMapping("/{contractId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public EventDto saveEvent(@PathVariable Long adminId, @PathVariable Long contractId, @Valid @RequestBody NewEventDto eventDto) {
+    public EventDto saveEvent(@PathVariable Long adminId, @PathVariable Long contractId,
+                              @Valid @RequestBody NewEventDto eventDto) {
         return eventService.saveEvent(adminId, contractId, eventDto);
     }
 
@@ -31,6 +32,12 @@ public class EventController {
                                                              @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                              @Positive @RequestParam(defaultValue = "10") Integer size) {
         return eventService.getAllEventsByAdminIdWithSortFromNewToOld(adminId, from, size);
+    }
+
+    @PatchMapping("/{eventId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public EventDto cancelEventByAdmin(@PathVariable Long adminId, @PathVariable Long eventId) {
+        return eventService.cancelEventByAdmin(adminId, eventId);
     }
 
     @DeleteMapping("/{eventId}")

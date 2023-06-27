@@ -28,8 +28,6 @@ public class EventDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String eventDate;
 
-    private Boolean requestModeration;
-
     @Positive
     private Long admin;
 

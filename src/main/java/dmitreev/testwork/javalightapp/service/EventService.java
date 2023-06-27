@@ -11,5 +11,7 @@ public interface EventService {
 
     List<EventDto> getAllEventsByAdminIdWithSortFromNewToOld(Long adminId, Integer from, Integer size);
 
+    EventDto cancelEventByAdmin(Long adminId, Long eventId);
+
     void adminDeleteEvent(Long eventId, Long adminId);
 }

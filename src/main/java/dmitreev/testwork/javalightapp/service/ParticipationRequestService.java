@@ -9,7 +9,5 @@ public interface ParticipationRequestService {
 
     List<ParticipationRequestDto> getParticipationRequests(Long partId);
 
-    ParticipationRequestDto rejectionParticipationRequest(Long partId, Long requestId);
-
     ParticipationRequestDto cancelParticipationRequest(Long partId, Long requestId);
 }

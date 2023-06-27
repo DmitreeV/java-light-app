@@ -68,6 +68,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public EventDto cancelEventByAdmin(Long adminId, Long eventId) {
+
+        Event event = eventRepository.findByIdAndAdminId(eventId, adminId)
+                .orElseThrow(() -> new ConflictException("Only the event organizer can cancel it."));
+
+        event.setStatus(EventStatus.CANCELED);
+        ;
+        log.info("The event cancelled by the admin with id {}.", adminId);
+        return eventMapper.toEventDto(eventRepository.save(event));
+    }
+
+    @Override
     public void adminDeleteEvent(Long eventId, Long adminId) {
         getAdmin(adminId);
         Event event = getEvent(eventId);
