@@ -74,7 +74,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new ConflictException("Only the event organizer can cancel it."));
 
         event.setStatus(EventStatus.CANCELED);
-        ;
+
         log.info("The event cancelled by the admin with id {}.", adminId);
         return eventMapper.toEventDto(eventRepository.save(event));
     }

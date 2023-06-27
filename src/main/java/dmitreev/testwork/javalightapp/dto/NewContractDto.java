@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class NewContractDto {
 
     @NotBlank(message = "'terms' can not be blank")
