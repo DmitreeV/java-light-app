@@ -1,0 +1,986 @@
+{
+	"info": {
+		"_postman_id": "34425e8b-206d-48e6-ab55-ccb49b2aca56",
+		"name": "Light App tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26544155"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Авторизация администратора",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового договора",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Договор должен содержать поля: number, terms, status, createdOn, admin, principal\", function () {",
+									"pm.expect(target).to.have.property('number');",
+									"pm.expect(target).to.have.property('terms');",
+									"pm.expect(target).to.have.property('status');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('admin');",
+									"pm.expect(target).to.have.property('principal');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"terms\": \"Contract for the organization of the event.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "adminId"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отправка договора на подписание",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts/:contractId/sent/:principalId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts",
+								":contractId",
+								"sent",
+								":principalId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin id"
+								},
+								{
+									"key": "contractId",
+									"value": "1",
+									"description": "contract id"
+								},
+								{
+									"key": "principalId",
+									"value": "1",
+									"description": "principal id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Принципал подписывает договор",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts/:contractId/review/:principalId?approved=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts",
+								":contractId",
+								"review",
+								":principalId"
+							],
+							"query": [
+								{
+									"key": "approved",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1"
+								},
+								{
+									"key": "contractId",
+									"value": "1"
+								},
+								{
+									"key": "principalId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление договора №2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Договор должен содержать поля: number, terms, status, createdOn, admin, principal\", function () {",
+									"pm.expect(target).to.have.property('number');",
+									"pm.expect(target).to.have.property('terms');",
+									"pm.expect(target).to.have.property('status');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('admin');",
+									"pm.expect(target).to.have.property('principal');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"terms\": \"The contract for the organization of the event with very favorable conditions.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Просмотр договоров администратора с сортировкой от нового к старому",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должно быть найдено два договора\", function () {",
+									"    pm.expect(target.length).to.eql(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts?from=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление договора администратором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/contracts/:contractId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"contracts",
+								":contractId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								},
+								{
+									"key": "contractId",
+									"value": "2",
+									"description": "contract Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового мероприятия",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Мероприятие должно содержать поля: id, eventName, rate, createdOn, eventDate, admin, status\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('eventName');",
+									"pm.expect(target).to.have.property('rate');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('eventDate');",
+									"pm.expect(target).to.have.property('admin');",
+									"pm.expect(target).to.have.property('status');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"eventName\": \"Алые паруса.\",\n   \"rate\": 2000,\n   \"eventDate\": \"2023-06-30T22:00:00.00000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/events/:contractId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"events",
+								":contractId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								},
+								{
+									"key": "contractId",
+									"value": "1",
+									"description": "contract Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление мероприятия №2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = JSON.parse(pm.request.body.raw);",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Мероприятие должно содержать поля: id, eventName, rate, createdOn, eventDate, admin, status\", function () {",
+									"pm.expect(target).to.have.property('id');",
+									"pm.expect(target).to.have.property('eventName');",
+									"pm.expect(target).to.have.property('rate');",
+									"pm.expect(target).to.have.property('createdOn');",
+									"pm.expect(target).to.have.property('eventDate');",
+									"pm.expect(target).to.have.property('admin');",
+									"pm.expect(target).to.have.property('status');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"eventName\": \"Концерт Пригожина.\",\n   \"rate\": 5000,\n   \"eventDate\": \"2023-07-05T20:30:00.00000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/events/:contractId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"events",
+								":contractId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								},
+								{
+									"key": "contractId",
+									"value": "1",
+									"description": "contract Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Просмотр мероприятий администратора с сортировкой от нового к старому",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должно быть найдено два мероприятия\", function () {",
+									"    pm.expect(target.length).to.eql(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/events?from=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"events"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отмена мероприятия администратором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/events/:eventId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"events",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin Id"
+								},
+								{
+									"key": "eventId",
+									"value": "2",
+									"description": "event Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление отмененного мероприятия администратором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/:adminId/events/:eventId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								":adminId",
+								"events",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "adminId",
+									"value": "1",
+									"description": "admin id"
+								},
+								{
+									"key": "eventId",
+									"value": "2",
+									"description": "event Id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Participant",
+			"item": [
+				{
+					"name": "Авторизация участника",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "participant",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "participant",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление запроса на участие в мероприятии",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/participant/:partId/requests/:eventId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"participant",
+								":partId",
+								"requests",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "partId",
+									"value": "1",
+									"description": "participant Id"
+								},
+								{
+									"key": "eventId",
+									"value": "1",
+									"description": "event Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление запроса на участие в мероприятии без ПЦР теста",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.response.to.be.withBody;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/participant/:partId/requests/:eventId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"participant",
+								":partId",
+								"requests",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "partId",
+									"value": "2",
+									"description": "participant Id"
+								},
+								{
+									"key": "eventId",
+									"value": "1",
+									"description": "event Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отмена заявки на участие пользователем",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/participant/:partId/requests/:requestId/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"participant",
+								":partId",
+								"requests",
+								":requestId",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "partId",
+									"value": "1",
+									"description": "participant Id"
+								},
+								{
+									"key": "requestId",
+									"value": "1",
+									"description": "request Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации о заявках участника",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {",
+									"    pm.response.to.be.ok;    ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"const source = pm.collectionVariables.get('response');",
+									"const target = pm.response.json();",
+									"",
+									"pm.test(\"Должна быть найдена одна заявка\", function () {",
+									"    pm.expect(target.length).to.eql(1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/participant/:partId/requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"participant",
+								":partId",
+								"requests"
+							],
+							"variable": [
+								{
+									"key": "partId",
+									"value": "1",
+									"description": "participant Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Попытка отмены отклоненной заявки",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {",
+									"    pm.response.to.have.status(409);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/participant/:partId/requests/:requestId/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"participant",
+								":partId",
+								"requests",
+								":requestId",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "partId",
+									"value": "2",
+									"description": "participant Id"
+								},
+								{
+									"key": "requestId",
+									"value": "2",
+									"description": "request Id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
