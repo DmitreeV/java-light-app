@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import dmitreev.testwork.javalightapp.enums.ContractStatus;
 import lombok.*;
 
-import javax.validation.constraints.Positive;
-
 @Getter
 @Setter
 @Builder
@@ -22,9 +20,7 @@ public class ContractDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String createdOn;
 
-    @Positive
     private Long admin;
 
-    @Positive
     private Long principal;
 }
