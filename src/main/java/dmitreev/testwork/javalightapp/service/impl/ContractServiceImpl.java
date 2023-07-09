@@ -4,6 +4,8 @@ import dmitreev.testwork.javalightapp.dto.ContractDto;
 import dmitreev.testwork.javalightapp.dto.ContractUpdateDto;
 import dmitreev.testwork.javalightapp.dto.NewContractDto;
 import dmitreev.testwork.javalightapp.enums.ContractStatus;
+import dmitreev.testwork.javalightapp.enums.UserRole;
+import dmitreev.testwork.javalightapp.error.exception.AccessException;
 import dmitreev.testwork.javalightapp.error.exception.ConflictException;
 import dmitreev.testwork.javalightapp.error.exception.NotFoundException;
 import dmitreev.testwork.javalightapp.mapper.ContractMapper;
@@ -43,6 +45,9 @@ public class ContractServiceImpl implements ContractService {
     public ContractDto saveContract(Long adminId, NewContractDto contractDto) {
         Admin admin = getAdmin(adminId);
 
+        if (!admin.getRole().equals(UserRole.ADMIN)) {
+            throw new AccessException("Access error.");
+        }
         Contract contract = contractMapper.toContract(contractDto);
 
         contract.setAdmin(admin);
